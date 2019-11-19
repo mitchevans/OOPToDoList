@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!--Skeleton CSS CDN-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha256-ECB9bbROLGm8wOoEbHcHRxlHgzGqYpDtNTgDTyDz0wg=" crossorigin="anonymous" />
+  <style>
+    .success, .error {
+      color: white;
+      padding: 5px;
+      margin: 5px 0 15px 0;
+    }
+    .success {
+      background: green;
+    }
+    .error {
+      background: red;
+    }
+  </style>
+  <title>To Do list</title>
+</head>
+<body>
+  <div class="container">
+    <h1>To Do List</h1>
+    <form id="form">
+      <div>
+        <label for="item">Item</label>
+        <input type="text" id="item" class='u-full-width'>
+      </div>
+      <div>
+          <label for="quantity">Quantity</label>
+          <input type="text" id="quantity" class='u-full-width'>
+        </div>
+      <div>
+          <label for="item">Item</label>
+          <input type="text" id="item" class='u-full-width'>
+      </div>
+      <div>
+        <input type="submit" value="Submit" class="u-full-width">
+      </div>
+    </form>
+    <table class="u-full-width">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="to-do-list"></tbody>
+    </table>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
