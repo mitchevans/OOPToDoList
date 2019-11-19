@@ -25,17 +25,23 @@ class UI {
     const container = document.querySelector('.container');
     const form = document.querySelector('#form');
     container.insertBefore(div, form);
-    
+
     // Remove message after 3 seconds
     setTimeout(function(){
       document.querySelector('.message').remove();
     }, 3000);
   }
 
+  deleteItem(target) {
+    if (target.className === 'delete') {
+      target.parentElement.parentElement.remove();
+    };
+  };
+
   clearFields() {
     document.getElementById('name').value = '';
     document.getElementById('quantity').value = '';
-  }
+  };
 }
 
 //Event Listeners
@@ -61,4 +67,16 @@ class UI {
     }
 
     e.preventDefault();
-  })
+  });
+
+// Delete item
+  document.getElementById('to-do-list').addEventListener('click', function(e){
+
+    const ui = new UI();
+
+    ui.deleteItem(e.target);
+
+    ui.showMessage('Item Removed', 'success');
+
+    e.preventDefault();
+  });
