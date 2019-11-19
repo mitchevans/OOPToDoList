@@ -44,6 +44,8 @@ class UI {
   deleteItem(target) {
     if (target.className === 'delete') {
       target.parentElement.parentElement.remove();
+      const ui = new UI;
+      ui.showMessage('Item Removed', 'success');
     };
   };
 
@@ -138,7 +140,7 @@ document.addEventListener('DOMContentLoaded', Store.displayItems);
     ui.deleteItem(e.target);
 
     Store.removeItem(e.target.id)
-    ui.showMessage('Item Removed', 'success');
+    
 
     e.preventDefault();
   });
