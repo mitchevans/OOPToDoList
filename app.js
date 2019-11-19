@@ -1,20 +1,29 @@
 class Item {
-  constructor(name, quantity) {
+  constructor(name, quantity, id) {
     this.name = name;
     this.quantity = quantity;
+    this.id = id;
   }
 }
 
 class UI {
   addItemToList(item) {
     const list = document.getElementById('to-do-list');
+    
     //Create new row and append to table of items
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${item.name}</td>
-      <td>${item.name}</td>
-      <td><a href="#" class="delete">X</a></td>`;
+      <td>${item.quantity}</td>
+      <td><a href="#" class="delete" id="${item.id}">X</a></td>`;
     list.appendChild(row);
+  }
+
+  CreateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   showMessage(message, className){
@@ -44,6 +53,52 @@ class UI {
   };
 }
 
+// Local Storage
+class Store {
+  static getItems() {
+    let items;
+    if(localStorage.getItem('items') === null){
+      items = [];
+    } else {
+      items = JSON.parse(localStorage.getItem('items'));
+    }
+    return items
+  };
+
+  static displayItems() {
+    const items = Store.getItems();
+
+    items.forEach(function(item) {
+      const ui = new UI;
+
+      ui.addItemToList(item);
+    });
+  };
+
+  static addItem(item) {
+    const items = Store.getItems();
+     
+    items.push(item);
+
+    localStorage.setItem('items', JSON.stringify(items));
+  };
+
+  static removeItem(id) {
+    const items = Store.getItems();
+
+    items.forEach(function(item, index){
+      if(item.id === id){
+        items.splice(index, 1)
+      }
+    });
+    localStorage.setItem('items', JSON.stringify(items));
+  };
+
+}
+
+// DOM Load Event
+document.addEventListener('DOMContentLoaded', Store.displayItems);
+
 //Event Listeners
 
 // Add item
@@ -51,15 +106,21 @@ class UI {
     const name = document.getElementById('name').value,
           quantity = document.getElementById('quantity').value
 
-    const item = new Item(name, quantity);
+    
 
     const ui = new UI();
 
+    const id = ui.CreateUUID()
+    const item = new Item(name, quantity, id);
     //Validate
     if (name === '' || quantity === '' ){
       ui.showMessage('Please fill in all fields', 'error');
     } else {
+      // Add item to list
       ui.addItemToList(item);
+
+      // Add item to LS
+      Store.addItem(item);
 
       ui.showMessage('Item successufully added', 'success');
 
@@ -76,6 +137,7 @@ class UI {
 
     ui.deleteItem(e.target);
 
+    Store.removeItem(e.target.id)
     ui.showMessage('Item Removed', 'success');
 
     e.preventDefault();
